@@ -2,7 +2,8 @@ import React, { useState } from "react";
 import { FaGoogle } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import ConnectWalletButton from "./WalletWidget";
-import ToastNotification from "../components/notif";
+import SuccessMessage from "../components/SuccessMessage";
+import ErrorMessage from "../components/ErrorMessage"
 
 import {
   getAuth,
@@ -11,34 +12,23 @@ import {
   signInWithPopup,
 } from "firebase/auth";
 
-interface Toast {
-  type: "success" | "error";
-  message: string;
-}
-
 const SignUp: React.FC = () => {
   const [showWalletWidget, setShowWalletWidget] = useState<boolean>(false);
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
-  const [toast, setToast] = useState<Toast | null>(null);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const navigate = useNavigate();
   const auth = getAuth();
 
-  const showToast = (type: "success" | "error", message: string) => {
-    setToast({ type, message });
-    setTimeout(() => {
-      setToast(null);
-    }, 3000);
-  };
-
   const handleSignUp = async () => {
     if (!email || !password) {
-      showToast("error", "Please enter both email and password.");
+      setErrorMessage("Please enter both email and password.");
       return;
     }
 
     if (password.length < 8) {
-      showToast("error", "Password must be at least 8 characters long.");
+      setErrorMessage("Password must be at least 8 characters long.");
       return;
     }
 
@@ -50,32 +40,13 @@ const SignUp: React.FC = () => {
       );
       console.log("User ID:", userCredential.user.uid);
 
-      // const response = await fetch("http://localhost:5000/herwaree/SignUp", {
-      //   method: "POST",
-      //   headers: {
-      //     "Content-Type": "application/json",
-      //   },
-      //   body: JSON.stringify({
-      //     userId: userCredential.user.uid,
-      //     email,
-      //     password,
-      //   }),
-      // });
-
-      // if (!response.ok) {
-      //   const errorData = await response.json().catch(() => null);
-      //   const errorMessage = errorData?.message || "Sign up failed.";
-      //   showToast("error", errorMessage);
-      //   return;
-      // }
-
-      showToast("success", "Sign up successful!");
+      setSuccessMessage("Sign up successful!");
       setTimeout(() => {
         navigate("/herwaree/introduce");
       }, 2000);
     } catch (error) {
       console.error("Error signing up:", error);
-      showToast("error", "Something went wrong. Please try again.");
+      setErrorMessage("Something went wrong. Please try again.");
     }
   };
 
@@ -85,46 +56,20 @@ const SignUp: React.FC = () => {
       const userCredential = await signInWithPopup(auth, provider);
       console.log("Google User ID:", userCredential.user.uid);
 
-      showToast("success", "Google sign-up successful!");
+      setSuccessMessage("Google sign-up successful!");
       setTimeout(() => {
         navigate("/herwaree/introduce");
       }, 2000);
     } catch (error) {
       console.error("Error signing up with Google:", error);
-      showToast("error", "Google sign-up failed. Please try again.");
+      setErrorMessage("Google sign-up failed. Please try again.");
     }
   };
 
-  // const handleWalletSignUp = async (walletAddress: string) => {
-  //   try {
-  //     const response = await fetch("http://localhost:5000/herwaree/SignUp", {
-  //       method: "POST",
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //       },
-  //       body: JSON.stringify({
-  //         walletAddress,
-  //       }),
-  //     });
-
-  //     if (response.ok) {
-  //       showToast("success", "Wallet sign-up successful!");
-  //       setTimeout(() => {
-  //         navigate("/herwaree/introduce");
-  //       }, 2000);
-  //     } else {
-  //       const errorData = await response.json().catch(() => null);
-  //       showToast("error", errorData?.message || "Wallet sign-up failed.");
-  //     }
-  //   } catch (error) {
-  //     console.error("Error signing up with wallet:", error);
-  //     showToast("error", "Something went wrong with wallet sign-up.");
-  //   }
-  // };
-
   return (
     <div className="min-h-screen flex flex-col justify-center bg-gray-100 p-8">
-      {toast && <ToastNotification toast={toast} />}
+      {errorMessage && <ErrorMessage message={errorMessage} />}
+      {successMessage && <SuccessMessage message={successMessage} />}
       <h1
         className="text-2xl font-bold italic text-center mb-6 bg-clip-text text-transparent"
         style={{
@@ -228,7 +173,6 @@ const SignUp: React.FC = () => {
         </button>
 
         {showWalletWidget && (
-          //removed onWalletConnect ---- it is not defined as an accepted type in this ConnectWaletButton component
           <ConnectWalletButton />
         )}
       </div>
