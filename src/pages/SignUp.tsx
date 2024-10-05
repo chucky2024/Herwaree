@@ -5,7 +5,7 @@ import ConnectWalletButton from "./WalletWidget";
 import SuccessMessage from "../components/SuccessMessage";
 import ErrorMessage from "../components/ErrorMessage"
 
-import {
+import  {
   getAuth,
   createUserWithEmailAndPassword,
   GoogleAuthProvider,
