@@ -140,8 +140,8 @@ const Profile: React.FC = () => {
               }
               setShowYearPicker(false);
             }}
-            view="decade"
-            maxDetail="decade"
+            // view="decade"
+            // maxDetail="decade"
             value={new Date(user?.yearOfBirth || new Date())}
             className="year-picker"
           />

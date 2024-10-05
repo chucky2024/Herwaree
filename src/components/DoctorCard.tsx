@@ -8,7 +8,8 @@ interface DoctorProps {
     specialty: string;
     description: string;
     location: string;
-  };
+  },
+  onBookSession: (name: string) => void;
 }
 
 const DoctorCard: React.FC<DoctorProps> = ({ doctor }) => {

@@ -95,32 +95,32 @@ const SignUp: React.FC = () => {
     }
   };
 
-  const handleWalletSignUp = async (walletAddress: string) => {
-    try {
-      const response = await fetch("http://localhost:5000/herwaree/SignUp", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          walletAddress,
-        }),
-      });
+  // const handleWalletSignUp = async (walletAddress: string) => {
+  //   try {
+  //     const response = await fetch("http://localhost:5000/herwaree/SignUp", {
+  //       method: "POST",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //       },
+  //       body: JSON.stringify({
+  //         walletAddress,
+  //       }),
+  //     });
 
-      if (response.ok) {
-        showToast("success", "Wallet sign-up successful!");
-        setTimeout(() => {
-          navigate("/herwaree/introduce");
-        }, 2000);
-      } else {
-        const errorData = await response.json().catch(() => null);
-        showToast("error", errorData?.message || "Wallet sign-up failed.");
-      }
-    } catch (error) {
-      console.error("Error signing up with wallet:", error);
-      showToast("error", "Something went wrong with wallet sign-up.");
-    }
-  };
+  //     if (response.ok) {
+  //       showToast("success", "Wallet sign-up successful!");
+  //       setTimeout(() => {
+  //         navigate("/herwaree/introduce");
+  //       }, 2000);
+  //     } else {
+  //       const errorData = await response.json().catch(() => null);
+  //       showToast("error", errorData?.message || "Wallet sign-up failed.");
+  //     }
+  //   } catch (error) {
+  //     console.error("Error signing up with wallet:", error);
+  //     showToast("error", "Something went wrong with wallet sign-up.");
+  //   }
+  // };
 
   return (
     <div className="min-h-screen flex flex-col justify-center bg-gray-100 p-8">
@@ -228,7 +228,8 @@ const SignUp: React.FC = () => {
         </button>
 
         {showWalletWidget && (
-          <ConnectWalletButton onWalletConnect={handleWalletSignUp} />
+          //removed onWalletConnect ---- it is not defined as an accepted type in this ConnectWaletButton component
+          <ConnectWalletButton />
         )}
       </div>
     </div>

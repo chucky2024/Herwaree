@@ -5,7 +5,7 @@ import {
   Route,
   createRoutesFromElements,
 } from "react-router-dom";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 // Import the Firebase configuration and auth module
 import { auth } from "../src/components/firebaseConfig";
