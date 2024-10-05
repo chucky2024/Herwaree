@@ -1,0 +1,3 @@
+[submodule "path/to/embedded-repository"]
+	path = path/to/embedded-repository
+	url = https://github.com/Team-Herwaree/Reproductive-Health-App
